@@ -285,7 +285,11 @@ def train_model(params: Params,
     params.to_file(os.path.join(serialization_dir, CONFIG_NAME))
 
     all_datasets = datasets_from_params(params)
-    datasets_for_vocab_creation = set(params.pop("datasets_for_vocab_creation", all_datasets))
+    datasets_for_vocab_creation = params.pop("datasets_for_vocab_creation", all_datasets)
+    if isinstance(datasets_for_vocab_creation, tuple):
+        datasets_for_vocab_creation = list(datasets_for_voacb_creation)
+    else:
+        datasets_for_vocab_creation = [datasets_for_vocab_creation]
 
     for dataset in datasets_for_vocab_creation:
         if dataset not in all_datasets:

@@ -88,7 +88,12 @@ def make_vocab_from_params(params: Params, serialization_dir: str):
                                  "serialization directory is non-empty")
 
     all_datasets = datasets_from_params(params)
-    datasets_for_vocab_creation = set(params.pop("datasets_for_vocab_creation", all_datasets))
+    datasets_for_vocab_creation = params.pop("datasets_for_vocab_creation", all_datasets)
+    if isinstance(datasets_for_vocab_creation, tuple):
+        datasets_for_vocab_creation = list(datasets_for_vocab_creation)
+    else:
+        datasets_for_vocab_creation = [datasets_for_vocab_creation]
+
 
     for dataset in datasets_for_vocab_creation:
         if dataset not in all_datasets:
